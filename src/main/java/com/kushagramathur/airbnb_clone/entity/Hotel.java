@@ -19,6 +19,9 @@ public class Hotel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User owner;
+
     @Column(nullable = false)
     private String name;
 

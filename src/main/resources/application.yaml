@@ -21,3 +21,7 @@ spring:
 
 jwt:
   secret-key: nfsfnwufbwrh38hrnwjfnwekfn3ou2f
+
+server:
+  servlet:
+    context-path: /api/v1
