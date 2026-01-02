@@ -30,6 +30,9 @@ public class Hotel {
     @Column(nullable = false)
     private Boolean active;
 
+    @OneToMany(mappedBy = "hotel")
+    private List<Room> rooms;
+
     @Column(columnDefinition = "TEXT[]")
     private String[] photos;
 
