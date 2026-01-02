@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: airbnb-clone
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db
+    username: user
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+    show-sql: true
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+jwt:
+  secret-key: nfsfnwufbwrh38hrnwjfnwekfn3ou2f
