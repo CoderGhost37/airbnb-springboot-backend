@@ -5,6 +5,7 @@ import com.kushagramathur.airbnb_clone.entity.Hotel;
 import com.kushagramathur.airbnb_clone.entity.Room;
 import com.kushagramathur.airbnb_clone.exception.ResourceNotFoundException;
 import com.kushagramathur.airbnb_clone.repository.HotelRepository;
+import com.kushagramathur.airbnb_clone.repository.RoomRepository;
 import com.kushagramathur.airbnb_clone.service.HotelService;
 import com.kushagramathur.airbnb_clone.service.InventoryService;
 import jakarta.transaction.Transactional;
@@ -21,6 +22,7 @@ public class HotelServiceImpl implements HotelService {
     private final HotelRepository hotelRepository;
     private final ModelMapper modelMapper;
     private final InventoryService inventoryService;
+    private final RoomRepository roomRepository;
 
     @Override
     public HotelDto createNewHotel(HotelDto hotelDto) {
@@ -65,10 +67,11 @@ public class HotelServiceImpl implements HotelService {
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Hotel with id " + id + " not found"));
 
-        hotelRepository.deleteById(id);
         for (Room room : hotel.getRooms()) {
             inventoryService.deleteFutureInventory(room);
+            roomRepository.deleteById(room.getId());
         }
+        hotelRepository.deleteById(id);
 
         return true;
     }
