@@ -1,6 +1,7 @@
 package com.kushagramathur.airbnb_clone.service;
 
 import com.kushagramathur.airbnb_clone.dto.HotelDto;
+import com.kushagramathur.airbnb_clone.dto.HotelInfoDto;
 import com.kushagramathur.airbnb_clone.entity.Hotel;
 
 public interface HotelService {
@@ -15,4 +16,5 @@ public interface HotelService {
 
     void activateHotel(Long id);
 
+    HotelInfoDto getHotelInfoById(Long hotelId);
 }

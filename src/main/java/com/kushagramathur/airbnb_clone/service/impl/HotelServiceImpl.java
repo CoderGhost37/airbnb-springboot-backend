@@ -1,6 +1,8 @@
 package com.kushagramathur.airbnb_clone.service.impl;
 
 import com.kushagramathur.airbnb_clone.dto.HotelDto;
+import com.kushagramathur.airbnb_clone.dto.HotelInfoDto;
+import com.kushagramathur.airbnb_clone.dto.RoomDto;
 import com.kushagramathur.airbnb_clone.entity.Hotel;
 import com.kushagramathur.airbnb_clone.entity.Room;
 import com.kushagramathur.airbnb_clone.exception.ResourceNotFoundException;
@@ -13,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -92,5 +96,20 @@ public class HotelServiceImpl implements HotelService {
         }
 
         hotelRepository.save(hotel);
+    }
+
+    @Override
+    public HotelInfoDto getHotelInfoById(Long hotelId) {
+        log.info("Getting hotel info with hotelId: {}", hotelId);
+        Hotel hotel = hotelRepository
+                .findById(hotelId)
+                .orElseThrow(() -> new ResourceNotFoundException("Hotel with id " + hotelId + " not found"));
+
+        List<RoomDto> rooms = hotel.getRooms()
+                .stream()
+                .map((element) -> modelMapper.map(element, RoomDto.class))
+                .toList();
+
+        return new HotelInfoDto(modelMapper.map(hotel, HotelDto.class), rooms);
     }
 }
