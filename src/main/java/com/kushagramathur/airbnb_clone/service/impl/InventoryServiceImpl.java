@@ -1,12 +1,15 @@
 package com.kushagramathur.airbnb_clone.service.impl;
 
 import com.kushagramathur.airbnb_clone.dto.HotelDto;
+import com.kushagramathur.airbnb_clone.dto.HotelPriceDto;
 import com.kushagramathur.airbnb_clone.dto.HotelSearchRequestDto;
 import com.kushagramathur.airbnb_clone.entity.Hotel;
 import com.kushagramathur.airbnb_clone.entity.Inventory;
 import com.kushagramathur.airbnb_clone.entity.Room;
+import com.kushagramathur.airbnb_clone.repository.HotelMinPriceRepository;
 import com.kushagramathur.airbnb_clone.repository.InventoryRepository;
 import com.kushagramathur.airbnb_clone.service.InventoryService;
+import com.kushagramathur.airbnb_clone.strategy.PricingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -26,6 +29,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     private final InventoryRepository inventoryRepository;
     private final ModelMapper modelMapper;
+    private final HotelMinPriceRepository hotelMinPriceRepository;
 
     @Override
     public void initializeRoomForAYear(Room room) {
@@ -56,11 +60,12 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Page<HotelDto> searchHotels(HotelSearchRequestDto hotelSearchRequest) {
+    public Page<HotelPriceDto> searchHotels(HotelSearchRequestDto hotelSearchRequest) {
         Pageable pageable = PageRequest.of(hotelSearchRequest.getPage(), hotelSearchRequest.getSize());
         long dateCount = 1 + ChronoUnit.DAYS.between(hotelSearchRequest.getStartDate(), hotelSearchRequest.getEndDate());
 
-        Page<Hotel> hotelPage = inventoryRepository.findHotelsWithAvailableInventory(
+
+        Page<HotelPriceDto> hotelPage = hotelMinPriceRepository.findHotelsWithAvailableInventory(
                 hotelSearchRequest.getCity(),
                 hotelSearchRequest.getStartDate(),
                 hotelSearchRequest.getEndDate(),
@@ -69,6 +74,6 @@ public class InventoryServiceImpl implements InventoryService {
                 pageable
         );
 
-        return hotelPage.map((element) -> modelMapper.map(element, HotelDto.class));
+        return hotelPage;
     }
 }
