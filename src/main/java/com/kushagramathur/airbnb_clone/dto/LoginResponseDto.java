@@ -1,0 +1,12 @@
+package com.kushagramathur.airbnb_clone.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class LoginResponseDto {
+    private String accessToken;
+}
