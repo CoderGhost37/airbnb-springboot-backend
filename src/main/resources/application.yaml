@@ -25,3 +25,11 @@ jwt:
 server:
   servlet:
     context-path: /api/v1
+
+stripe:
+  secret:
+    key:
+  webhook:
+    secret:
+
+frontend.url: http://localhost:8080
