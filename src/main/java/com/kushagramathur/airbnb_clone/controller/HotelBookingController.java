@@ -2,6 +2,7 @@ package com.kushagramathur.airbnb_clone.controller;
 
 import com.kushagramathur.airbnb_clone.dto.BookingDto;
 import com.kushagramathur.airbnb_clone.dto.BookingRequestDto;
+import com.kushagramathur.airbnb_clone.dto.BookingStatusResponseDto;
 import com.kushagramathur.airbnb_clone.dto.GuestDto;
 import com.kushagramathur.airbnb_clone.service.BookingService;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,17 @@ public class HotelBookingController {
     public ResponseEntity<Map<String, String>> initiatePayment(@PathVariable Long bookingId) {
         String sessionUrl = bookingService.initiatePayments(bookingId);
         return ResponseEntity.ok(Map.of("sessionUrl", sessionUrl));
+    }
+
+    @PostMapping("/{bookingId}/cancel")
+    public ResponseEntity<Void> cancelBooking(@PathVariable Long bookingId) {
+        bookingService.cancelBooking(bookingId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{bookingId}/status")
+    public ResponseEntity<BookingStatusResponseDto> getBookingStatus(@PathVariable Long bookingId) {
+        return ResponseEntity.ok(new BookingStatusResponseDto(bookingService.getBookingStatus(bookingId)));
     }
 
 }

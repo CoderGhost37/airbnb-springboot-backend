@@ -3,6 +3,7 @@ package com.kushagramathur.airbnb_clone.service;
 import com.kushagramathur.airbnb_clone.dto.BookingDto;
 import com.kushagramathur.airbnb_clone.dto.BookingRequestDto;
 import com.kushagramathur.airbnb_clone.dto.GuestDto;
+import com.kushagramathur.airbnb_clone.entity.enums.BookingStatus;
 import com.stripe.model.Event;
 
 import java.util.List;
@@ -15,4 +16,8 @@ public interface BookingService {
     String initiatePayments(Long bookingId);
 
     void capturePayment(Event event);
+
+    void cancelBooking(Long bookingId);
+
+    BookingStatus getBookingStatus(Long bookingId);
 }
